@@ -20,7 +20,7 @@ If you find this work useful, please cite our paper [1] with the following bibte
 
 [1] A. Tran, T. Hassner, I. Masi, E. Paz, Y. Nirkin, G. Medioni, "[Extreme 3D Face Reconstruction: Looking Past Occlusions](###)", arxiv pre-print 2017 
 
-[2] A. Tran, T. Hassner, I. Masi, G. Medioni, "[Regressing Robust and Discriminative 3D Morphable Models with a very Deep Neural Network](https://arxiv.org/abs/1612.04904)", CVPR 2017 
+[2] A. Tran, T. Hassner, I. Masi, G. Medioni, "[Regressing Robust and Discriminative 3D Morphable Models with a very Deep Neural Network](http://openaccess.thecvf.com/content_cvpr_2017/papers/Tran_Regressing_Robust_and_CVPR_2017_paper.pdf)", CVPR 2017 
 
 ## Changelog
 - Dec. 2017, First Release 

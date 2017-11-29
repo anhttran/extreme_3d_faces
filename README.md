@@ -10,7 +10,7 @@ If you find this work useful, please cite our paper [1] with the following bibte
 ```latex
 @inproceedings{tran2017extreme
   title={Extreme 3D Face Reconstruction: Looking Past Occlusions},
-  author={Tran, Anh Tuan and Hassner, Tal and Masi, Iacopo and Paz, Eran and Nirkin, Yuval and Medioni, G\'{e}rrard},
+  author={Tran, Anh Tuan and Hassner, Tal and Masi, Iacopo and Paz, Eran and Nirkin, Yuval and Medioni, G\'{e}rard},
   booktitle={arxiv preprint},
   year={2017}
 }

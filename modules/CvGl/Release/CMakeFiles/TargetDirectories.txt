@@ -1,1 +1,0 @@
-/home/anh/Code/3DFaceVideo/exe/CvGl/Release/CMakeFiles/CvGl.dir

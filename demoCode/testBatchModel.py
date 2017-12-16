@@ -157,9 +157,9 @@ print('> CNN Model loaded to regress 3D Shape and Texture!')
 ## For loop over the input images
 count = 0
 with open(data_out + "/imList.txt", "r") as ins:
-   for image_path in ins:
-	if len(image_path) < 3:
-		continue
+	for image_path in ins:
+		if len(image_path) < 3:
+			continue
 	image_path = image_path[:-1]
 	count = count + 1
 	fig_name = ntpath.basename(image_path)

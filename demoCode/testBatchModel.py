@@ -83,10 +83,10 @@ if len(landmarkDir) == 0:
 ##### Prepare images ##############################
 countIms = 0
 with open(fileList, "r") as ins, open(data_out + "/imList.txt","w") as outs:
-    for image_path in ins:
-	if len(image_path) < 6:
-		print('Skipping ' + image_path + ' file path too short')
-		continue
+	for image_path in ins:
+		if len(image_path) < 6:
+			print('Skipping ' + image_path + ' file path too short')
+			continue
 	image_path = image_path[:-1]
 	print("> Prepare image "+image_path + ":")
 	imname = ntpath.basename(image_path)

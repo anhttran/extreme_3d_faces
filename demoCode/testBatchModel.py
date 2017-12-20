@@ -83,52 +83,52 @@ if len(landmarkDir) == 0:
 ##### Prepare images ##############################
 countIms = 0
 with open(fileList, "r") as ins, open(data_out + "/imList.txt","w") as outs:
-    for image_path in ins:
-	if len(image_path) < 6:
-		print('Skipping ' + image_path + ' file path too short')
-		continue
-	image_path = image_path[:-1]
-	print("> Prepare image "+image_path + ":")
-	imname = ntpath.basename(image_path)
-	#imname = imname[:-4]
-	imname = imname.split(imname.split('.')[-1])[0][0:-1]
-	img = cv2.imread(image_path)
-	## If we have input landmarks
-	if len(landmarkDir) > 0:
-		lms = np.loadtxt(landmarkDir + '/' + imname + '.pts')
-		img2 = cv2.copyMakeBorder(img,0,0,0,0,cv2.BORDER_REPLICATE)
-		nLM = lms.shape[0]
-		for i in range(0,nLM):
-			cv2.circle(img2, (lms[i,0], lms[i,1]), 5, (255,0,0))
-		img, lms = utils.cropByInputLM(img, lms, img2)
-	else:
-		dlib_img = io.imread(image_path)
-		img2 = cv2.copyMakeBorder(img,0,0,0,0,cv2.BORDER_REPLICATE)
-		dets = detector(img, 1)
-		print(">     Number of faces detected: {}".format(len(dets)))
-		if len(dets) == 0:
-			print('> Could not detect the face, skipping the image...' + image_path)
+	for image_path in ins:
+		if len(image_path) < 6:
+			print('Skipping ' + image_path + ' file path too short')
 			continue
-		if len(dets) > 1:
-			print("> Process only the first detected face!")
-		detected_face = dets[0]
-		## If we are using landmarks to crop
-		shape = predictor(dlib_img, detected_face)
-		nLM = shape.num_parts
-		for i in range(0,nLM):
-			cv2.circle(img2, (shape.part(i).x, shape.part(i).y), 5, (255,0,0))
-		img, lms = utils.cropByLM(img, shape, img2)
-	cv2.imwrite(data_out + "/imgs/"+imname+"_detect.png",img2)
+		image_path = image_path[:-1]
+		print("> Prepare image "+image_path + ":")
+		imname = ntpath.basename(image_path)
+		#imname = imname[:-4]
+		imname = imname.split(imname.split('.')[-1])[0][0:-1]
+		img = cv2.imread(image_path)
+		## If we have input landmarks
+		if len(landmarkDir) > 0:
+			lms = np.loadtxt(landmarkDir + '/' + imname + '.pts')
+			img2 = cv2.copyMakeBorder(img,0,0,0,0,cv2.BORDER_REPLICATE)
+			nLM = lms.shape[0]
+			for i in range(0,nLM):
+				cv2.circle(img2, (lms[i,0], lms[i,1]), 5, (255,0,0))
+			img, lms = utils.cropByInputLM(img, lms, img2)
+		else:
+			dlib_img = io.imread(image_path)
+			img2 = cv2.copyMakeBorder(img,0,0,0,0,cv2.BORDER_REPLICATE)
+			dets = detector(img, 1)
+			print(">     Number of faces detected: {}".format(len(dets)))
+			if len(dets) == 0:
+				print('> Could not detect the face, skipping the image...' + image_path)
+				continue
+			if len(dets) > 1:
+				print("> Process only the first detected face!")
+			detected_face = dets[0]
+			## If we are using landmarks to crop
+			shape = predictor(dlib_img, detected_face)
+			nLM = shape.num_parts
+			for i in range(0,nLM):
+				cv2.circle(img2, (shape.part(i).x, shape.part(i).y), 5, (255,0,0))
+			img, lms = utils.cropByLM(img, shape, img2)
+		cv2.imwrite(data_out + "/imgs/"+imname+"_detect.png",img2)
 
-	lms = lms * 500.0/img.shape[0]
-	fileout = open(data_out + "/imgs/"+imname + ".pts","w")
-	for i in range(0,lms.shape[0]):
-		fileout.write("%f %f\n" % (lms[i,0], lms[i,1]))
-	fileout.close()
-	img = cv2.resize(img,(500, 500))
-	cv2.imwrite(data_out + "/imgs/"+imname+ ".png",img)
-	outs.write("%s\n" % (data_out + "/imgs/"+imname+ ".png"))
-	countIms = countIms + 1
+		lms = lms * 500.0/img.shape[0]
+		fileout = open(data_out + "/imgs/"+imname + ".pts","w")
+		for i in range(0,lms.shape[0]):
+			fileout.write("%f %f\n" % (lms[i,0], lms[i,1]))
+		fileout.close()
+		img = cv2.resize(img,(500, 500))
+		cv2.imwrite(data_out + "/imgs/"+imname+ ".png",img)
+		outs.write("%s\n" % (data_out + "/imgs/"+imname+ ".png"))
+		countIms = countIms + 1
 
 ##################################################
 ##### Shape fitting ############################## 
@@ -157,24 +157,24 @@ print('> CNN Model loaded to regress 3D Shape and Texture!')
 ## For loop over the input images
 count = 0
 with open(data_out + "/imList.txt", "r") as ins:
-   for image_path in ins:
-	if len(image_path) < 3:
-		continue
-	image_path = image_path[:-1]
-	count = count + 1
-	fig_name = ntpath.basename(image_path)
-	outFile = data_out + "/shape/" + fig_name[:-4]
-	print('> Processing image: ', image_path, ' ', fig_name, ' ', str(count) + '/' + str(countIms))
-	net.blobs['data'].reshape(1,3,trg_size,trg_size)
-	im = caffe.io.load_image(image_path)
-	## Transforming the image into the right format
-	net.blobs['data'].data[...] = transformer.preprocess('data', im)
-	## Forward pass into the CNN
-	net_output = net.forward()
-	## Getting the output
-	features = np.hstack( [net.blobs[layer_name].data[0].flatten()] )
-	## Writing the regressed 3DMM parameters
-	np.savetxt(outFile + '.ply.alpha', features[0:99])
+	for image_path in ins:
+		if len(image_path) < 3:
+			continue
+		image_path = image_path[:-1]
+		count = count + 1
+		fig_name = ntpath.basename(image_path)
+		outFile = data_out + "/shape/" + fig_name[:-4]
+		print('> Processing image: ', image_path, ' ', fig_name, ' ', str(count) + '/' + str(countIms))
+		net.blobs['data'].reshape(1,3,trg_size,trg_size)
+		im = caffe.io.load_image(image_path)
+		## Transforming the image into the right format
+		net.blobs['data'].data[...] = transformer.preprocess('data', im)
+		## Forward pass into the CNN
+		net_output = net.forward()
+		## Getting the output
+		features = np.hstack( [net.blobs[layer_name].data[0].flatten()] )
+		## Writing the regressed 3DMM parameters
+		np.savetxt(outFile + '.ply.alpha', features[0:99])
 
 ##################################################
 ##### Bump map regression ########################

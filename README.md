@@ -1,6 +1,6 @@
 # Extreme 3D Face Reconstruction: Looking Past Occlusions
 
-**Please, note that the main part of the code has been released, though we are still testing it to fix possibile glitches. Thank you.**
+**Please, note that the main part of the code has been released, though we are still testing it to fix possible glitches. Thank you.**
 
 Python and C++ code for realistic 3D face modeling from single image using **[our shape and detail regression networks](https://arxiv.org/abs/1712.05083)**
 

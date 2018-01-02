@@ -6,8 +6,11 @@ SET(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_RPATH}:\$ORIGIN/../bin:\$ORIGIN")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/)
 
 # DEFINE PATH TO YOUR THIRD PARTY LIBs
-set (DLIB_INCLUDE_DIR "/home/anh/Downloads/dlib-19.4")
-set (DLIB_LIB_DIR "/home/anh/Downloads/dlib-19.4/shared_build/dlib")
+# set (DLIB_INCLUDE_DIR "/home/anh/Downloads/dlib-19.4" CACHE PATH "dlib include directory")
+# set (DLIB_LIB_DIR "/home/anh/Downloads/dlib-19.4/shared_build/dlib" CACHE PATH "dlib library directory")
+
+# dlib
+find_package(dlib REQUIRED)
 
 # OpenCV
 if(UNIX)
@@ -57,6 +60,9 @@ endif()
 
 # Eigen
 include_directories(lib/3rdParty/Eigen)
+
+# HDF5
+find_package(HDF5 REQUIRED C CXX HL)
 
 # libraries (ordering matters)
 add_subdirectory(modules/CvGl)

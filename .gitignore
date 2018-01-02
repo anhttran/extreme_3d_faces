@@ -1,0 +1,4 @@
+build
+bin
+data/paper/3D/*
+.vscode

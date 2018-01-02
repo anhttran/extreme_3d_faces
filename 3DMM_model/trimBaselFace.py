@@ -27,11 +27,11 @@ def convert(data):
 	new = data.reshape(data.shape[0],1).astype('float64')
 	return new
 if not os.path.exists('01_MorphableModel.mat'):
-	print "Cannot find '01_MorphableModel.mat'"
+	print("Cannot find '01_MorphableModel.mat'")
 	exit(0)
 
 if not os.path.exists('Model_Expression.mat'):
-	print "Cannot find 'Model_Expression.mat'"
+	print("Cannot find 'Model_Expression.mat'")
 	exit(0)
 
 mod_struct = scipy.io.loadmat('mod_struct_expr.mat',squeeze_me=True,struct_as_record=False)

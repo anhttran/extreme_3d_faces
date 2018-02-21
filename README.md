@@ -110,7 +110,7 @@ $ Usage: ./testPaperResults.sh
 If you find this work useful, please cite our paper [1] with the following bibtex:
 
 ```latex
-@inproceedings{tran2017extreme
+@inproceedings{tran2017extreme,
   title={Extreme {3D} Face Reconstruction: Looking Past Occlusions},
   author={Tran, Anh Tuan and Hassner, Tal and Masi, Iacopo and Paz, Eran and Nirkin, Yuval and Medioni, G\'{e}rard},
   booktitle={IEEE Conf. on Computer Vision and Pattern Recognition (CVPR)},

@@ -4,7 +4,7 @@
 
 **Please note that the main part of the code has been released, though we are still testing it to fix possible glitches. Thank you.**
 
-Python and C++ code for realistic 3D face modeling from single image using **[our shape and detail regression networks](https://arxiv.org/abs/1712.05083)**
+Python and C++ code for realistic 3D face modeling from single image using **[our shape and detail regression networks](https://arxiv.org/abs/1712.05083)** published in CVPR 2018 [1].
 
 This page contains end-to-end demo code that estimates the 3D facial shape with realistic details directly from an unconstrained 2D face image. For a given input image, it produces standard ply files of the 3D face shape. It accompanies the deep networks described in our paper [1] and [2]. The occlusion recovery code, however, will be published in a future release. We also include demo code and data presented in [1].
 
@@ -111,16 +111,16 @@ If you find this work useful, please cite our paper [1] with the following bibte
 
 ```latex
 @inproceedings{tran2017extreme
-  title={Extreme 3D Face Reconstruction: Looking Past Occlusions},
+  title={Extreme {3D} Face Reconstruction: Looking Past Occlusions},
   author={Tran, Anh Tuan and Hassner, Tal and Masi, Iacopo and Paz, Eran and Nirkin, Yuval and Medioni, G\'{e}rard},
-  booktitle={arxiv preprint},
-  year={2017}
+  booktitle={IEEE Conf. on Computer Vision and Pattern Recognition (CVPR)},
+  year=2018
 }
 ```
 
 ## References
 
-[1] A. Tran, T. Hassner, I. Masi, E. Paz, Y. Nirkin, G. Medioni, "[Extreme 3D Face Reconstruction: Looking Past Occlusions](https://arxiv.org/abs/1712.05083)", arxiv pre-print 2017 
+[1] A. Tran, T. Hassner, I. Masi, E. Paz, Y. Nirkin, G. Medioni, "[Extreme 3D Face Reconstruction: Looking Past Occlusions](https://arxiv.org/abs/1712.05083)", IEEE Conf. on Computer Vision and Pattern Recognition (CVPR), Salt Lake City, June 2018 
 
 [2] A. Tran, T. Hassner, I. Masi, G. Medioni, "[Regressing Robust and Discriminative 3D Morphable Models with a very Deep Neural Network](http://openaccess.thecvf.com/content_cvpr_2017/papers/Tran_Regressing_Robust_and_CVPR_2017_paper.pdf)", CVPR 2017 
 

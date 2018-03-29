@@ -1,4 +1,4 @@
-# Extreme 3D Face Reconstruction: Looking Past Occlusions
+# Extreme 3D Face Reconstruction: Seeing Through Occlusions
 
 ![Teaser](http://www-bcf.usc.edu/~iacopoma/img/extreme_3d_teaser.png)
 
@@ -111,7 +111,7 @@ If you find this work useful, please cite our paper [1] with the following bibte
 
 ```latex
 @inproceedings{tran2017extreme,
-  title={Extreme {3D} Face Reconstruction: Looking Past Occlusions},
+  title={Extreme {3D} Face Reconstruction: Seeing Through Occlusions},
   author={Tran, Anh Tuan and Hassner, Tal and Masi, Iacopo and Paz, Eran and Nirkin, Yuval and Medioni, G\'{e}rard},
   booktitle={IEEE Conf. on Computer Vision and Pattern Recognition (CVPR)},
   year=2018
@@ -120,7 +120,7 @@ If you find this work useful, please cite our paper [1] with the following bibte
 
 ## References
 
-[1] A. Tran, T. Hassner, I. Masi, E. Paz, Y. Nirkin, G. Medioni, "[Extreme 3D Face Reconstruction: Looking Past Occlusions](https://arxiv.org/abs/1712.05083)", IEEE Conf. on Computer Vision and Pattern Recognition (CVPR), Salt Lake City, June 2018 
+[1] A. Tran, T. Hassner, I. Masi, E. Paz, Y. Nirkin, G. Medioni, "[Extreme 3D Face Reconstruction: Seeing Through Occlusions](https://arxiv.org/abs/1712.05083)", IEEE Conf. on Computer Vision and Pattern Recognition (CVPR), Salt Lake City, June 2018 
 
 [2] A. Tran, T. Hassner, I. Masi, G. Medioni, "[Regressing Robust and Discriminative 3D Morphable Models with a very Deep Neural Network](http://openaccess.thecvf.com/content_cvpr_2017/papers/Tran_Regressing_Robust_and_CVPR_2017_paper.pdf)", CVPR 2017 
 

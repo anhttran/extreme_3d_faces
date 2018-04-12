@@ -127,9 +127,8 @@ If you find this work useful, please cite our paper [1] with the following bibte
 ## Changelog
 - Dec. 2017, First Release 
 
-## Disclaimer
-
-_The SOFTWARE PACKAGE provided in this page is provided "as is", without any guarantee made as to its suitability or fitness for any particular use. It may contain bugs, so use of this tool is at your own risk. We take no responsibility for any damage of any sort that may unintentionally be caused through its use._
+## License and Disclaimer
+Please, see [the LICENSE here](LICENSE.txt)
 
 ## Contacts
 

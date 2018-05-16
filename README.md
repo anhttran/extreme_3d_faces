@@ -56,7 +56,7 @@ Note that we modified the model files from the 3DMM-CNN paper. Therefore, if you
 ```
 	sudo apt-get install libhdf5-dev
 ```
-- Install **Dlib C++ library** Dlib should be compiled to shared objects. Check the comments in its CMakeList.txt.
+- Install **Dlib C++ library**. Dlib should be compiled to shared objects. Check the comments in its CMakeList.txt.
 ```
 	(http://dlib.net/)
 ```

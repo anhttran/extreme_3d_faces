@@ -14,7 +14,7 @@ This page contains end-to-end demo code that estimates the 3D facial shape with 
 
 * [Dlib Python and C++ library](http://dlib.net/)
 * [OpenCV Python and C++ library](http://opencv.org/)
-* [Caffe](caffe.berkeleyvision.org) (**version 1.0.0-rc3 or above required**)
+* [Caffe](http://caffe.berkeleyvision.org) (**version 1.0.0-rc3 or above required**)
 * [Numpy](http://www.numpy.org/)
 * [Python2.7](https://www.python.org/download/releases/2.7/)
 * [PyTorch](http://pytorch.org/)

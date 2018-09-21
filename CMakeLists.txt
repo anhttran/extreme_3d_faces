@@ -56,6 +56,9 @@ if (OPENMP_FOUND)
 	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
 endif()
 
+# HDF5
+find_package(HDF5 REQUIRED)
+
 # Eigen
 include_directories(lib/3rdParty/Eigen)
 

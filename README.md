@@ -60,8 +60,8 @@ Note that we modified the model files from the 3DMM-CNN paper. Therefore, if you
 ```
 	(http://dlib.net/)
 ```
-- Update Dlib directory paths (`DLIB_INCLUDE_DIR` and `DLIB_LIB_DIR`) in `CMakeLists.txt`
-- Make build directory (temporary). Make & install to bin folder
+- In Extreme 3D's `CMakeLists.txt`, update Dlib directory paths (`DLIB_INCLUDE_DIR` and `DLIB_LIB_DIR`).
+- Make build directory (temporary) in the Extreme 3D downloaded repository. Make & install to bin folder
 ```
 	mkdir build
 	cd build

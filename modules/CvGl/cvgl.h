@@ -6,11 +6,11 @@
 #define GL_GLEXT_PROTOTYPES 1
 #endif
 //GLEW needs to be first
-#include <GL/glew.h>//
+//#include <GL/glew.h>//
 #include <GL/glext.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
-//#include <GL/osmesa.h>
+#include <GL/osmesa.h>
 
 #include "SimpleMesh.h"
 #include "Material.h"

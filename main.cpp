@@ -11,6 +11,8 @@
 #include <string>
 #include <iostream>
 #include "H5Cpp.h"
+#include <opencv2/imgproc/imgproc.hpp> 
+#include <opencv2/highgui/highgui.hpp> 
 
 using namespace std;
 using namespace cv;
@@ -136,8 +138,8 @@ int main(int argc, char** argv)
     cv::Mat lms;
 
     OutputSettings outSet;
-    outSet.foundationFrontal = outSet.foundationAligned = outSet.withBumpFrontal = outSet.sparseFullFrontal = false;
-    outSet.withBumpAligned = outSet.finalFrontal = true;
+    outSet.foundationFrontal = outSet.foundationAligned = outSet.withBumpAligned = outSet.finalFrontal = true;
+    outSet.sparseFullFrontal = outSet.withBumpFrontal = false;
     // Batch mode
     if (argc > 1 && strcmp(argv[1],"-batch") == 0) {
 	    if (argc < 9) {
@@ -152,12 +154,12 @@ int main(int argc, char** argv)
 	    DlibWrapper dw(argv[8]);
 	    int outSize = 500;			// Size of visualized image
 	    bool symFlag = true;
-	    if (argc > 10) symFlag = strcmp(argv[10],"0") == 0;	  
+	    //if (argc > 10) symFlag = strcmp(argv[10],"0") == 0;	  
 	    if (argc > 9){
 		strcpy(lmDir,argv[9]);
 	    }
 	    FaceServices2 fservice(argv[7]);
-	    fservice.init(500,500,1000.0f);	
+	    fservice.init(500,500,1000.0f);
 	    
 	    ifstream in_stream(argv[2]);
 	    if (!in_stream.is_open()) {

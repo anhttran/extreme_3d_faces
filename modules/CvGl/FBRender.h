@@ -9,11 +9,11 @@
 #define GL_GLEXT_PROTOTYPES 1
 #endif
 //GLEW needs to be first
-#include <GL/glew.h>//
+//#include <GL/glew.h>//
 #include <GL/glu.h>
 #include <GL/glext.h>//
-#include <GL/glut.h>
-//#include <GL/osmesa.h>
+//#include <GL/glut.h>
+#include <GL/osmesa.h>
 //#include <cuda_gl_interop.h>
 //
 //#include <cutil_inline.h>
@@ -37,8 +37,8 @@ class FBRender {
 
 	int wdId;
 	int wdId2;
-	//void initOSMesaContext();
-//	OSMesaContext ctx;
+	void initOSMesaContext();
+ 	OSMesaContext ctx;
 protected:
 	
 	//off-screen framebuffer size

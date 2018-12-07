@@ -14,7 +14,6 @@ SET(HEADERS
 )
 
 add_library( CvGl STATIC ${SOURCE} ${HEADERS})
-target_link_libraries(CvGl PUBLIC -lGLU 
-	-lGLEW -lglut -lGL -lm)
+target_link_libraries(CvGl PUBLIC -lm -lGLU -lOSMesa)
 
 install (TARGETS CvGl DESTINATION .)

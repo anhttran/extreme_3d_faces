@@ -5,6 +5,34 @@ const unsigned int FBRender::winWidth = 128;
 const unsigned int FBRender::winHeight = 128;
 using namespace std;
 
+
+void FBRender::initOSMesaContext()
+{
+	//cout << "Init OSMesa\n";
+	void *pbuffer;
+	#if OSMESA_MAJOR_VERSION * 100 + OSMESA_MINOR_VERSION >= 305
+	   /* specify Z, stencil, accum sizes */
+	      ctx = OSMesaCreateContextExt( OSMESA_RGBA, 24, 8, 0, NULL );
+	#else
+	      ctx = OSMesaCreateContext( OSMESA_RGBA, NULL );
+	#endif
+	if (!ctx) {
+	     cout << "OSMesaCreateContext failed!\n";
+	     exit(1);
+	}
+	pbuffer = malloc( FBRender::winWidth * FBRender::winHeight * 4 * sizeof(GLuint) );
+	if (!pbuffer) {
+	      cout << "Alloc image buffer failed!\n";
+	      exit(1);
+	}
+	/* Bind the buffer to the context and make it current */
+	if (!OSMesaMakeCurrent( ctx, pbuffer, GL_UNSIGNED_BYTE, FBRender::winWidth, FBRender::winHeight )) {
+	      cout << "OSMesaMakeCurrent failed!\n";
+	      exit(1);
+	}
+
+}
+
 FBRender::FBRender( int width,
 				    int height,
 					bool showWindow ):
@@ -16,6 +44,7 @@ fbWidth( width ), fbHeight( height )
 
 FBRender::~FBRender()
 {
+	OSMesaDestroyContext(ctx);
 }
 
 void FBRender::init(int width, int height, bool showWindow)
@@ -38,6 +67,7 @@ FBRender::initGL()
 	myArgv [0]= strdup( "c" );
 
 	// Create GL context
+#if 0
     if (glutGetWindow() == 0)
     glutInit( &myArgc, myArgv);
     glutInitDisplayMode(GLUT_RGBA | GLUT_ALPHA | GLUT_DOUBLE | GLUT_DEPTH);
@@ -57,6 +87,9 @@ FBRender::initGL()
 		std::cerr << "***FBRender::init(): GL_EXT_framebuffer_object extension was not found\n";
 		exit(EXIT_FAILURE);
 	}
+#else
+	initOSMesaContext();
+#endif
 
 	//Black background color
 	glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );

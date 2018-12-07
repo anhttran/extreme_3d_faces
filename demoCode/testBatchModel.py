@@ -26,7 +26,6 @@ os.environ['GLOG_minloglevel'] = '2'
 import numpy as np
 from PIL import Image
 from glob import glob
-import caffe
 import cv2
 import time
 import ntpath
@@ -37,20 +36,22 @@ import sys
 from skimage import io
 import dlib
 import utils
+import torch
+import imp
+from torch.autograd import Variable
 import bumpMapRegressor
 # --------------------------------------------------------------------------- #
 # Usage: python testBatchModel.py <inputList> <outputDir> [<landmarkDir>]
 # --------------------------------------------------------------------------- #
 # CNN network spec
-deploy_path = '../CNN/deploy_network.prototxt'
-model_path  = '../CNN/3dmm_cnn_resnet_101.caffemodel'
-mean_path = '../CNN/mean.binaryproto'
+model_path  = '../CNN/shape_model.pth'
+mean_path = '../CNN/shape_mean.npz'
 layer_name      = 'fc_ftnew'
 bumpModel_path = '../CNN/ckpt_109_grad.pth.tar'
 #GPU ID we want to use
-GPU_ID = 0	
+GPU_ID = 0
 ## Modifed Basel Face Model
-#BFM_path = '../3DMM_model/BaselFaceModel_mod.mat'
+BFM_path = '../3DMM_model/BaselFaceModel_mod.mat'
 ## CNN template size
 trg_size = 224
 #### Initiate ################################
@@ -60,9 +61,11 @@ if len(sys.argv) < 3 or len(sys.argv) > 4:
 		exit(1)
 fileList = sys.argv[1]
 data_out = sys.argv[2]
+data_out = os.path.abspath(data_out)
 landmarkDir = ''
 if len(sys.argv) > 3:
 	landmarkDir = sys.argv[3]
+	landmarkDir = os.path.abspath(landmarkDir)
 
 if not os.path.exists(data_out):
 	os.makedirs(data_out)
@@ -130,30 +133,22 @@ with open(fileList, "r") as ins, open(data_out + "/imList.txt","w") as outs:
 		outs.write("%s\n" % (data_out + "/imgs/"+imname+ ".png"))
 		countIms = countIms + 1
 
-##################################################
+###################################################
 ##### Shape fitting ############################## 
 # load net
-try: 
-	caffe.set_mode_gpu()
-	caffe.set_device(GPU_ID)
-	pass
-except Exception as ex:
-	print('> Could not setup Caffe in GPU ' +str(GPU_ID) + ' - Error: ' + ex)
-	print('> Reverting into CPU mode')
-	caffe.set_mode_cpu()
-## Opening mean average image
-proto_data = open(mean_path, "rb").read()
-a = caffe.io.caffe_pb2.BlobProto.FromString(proto_data)
-mean  = caffe.io.blobproto_to_array(a)[0]
-## Loading the CNN
-net = caffe.Classifier(deploy_path, model_path)
-## Setting up the right transformer for an input image
-transformer = caffe.io.Transformer({'data': net.blobs['data'].data.shape})
-transformer.set_transpose('data', (2,0,1))
-transformer.set_channel_swap('data', (2,1,0))
-transformer.set_raw_scale('data', 255.0)
-transformer.set_mean('data',mean)
+MainModel = imp.load_source('MainModel', "../CNN/shape_model.py")
+net = torch.load(model_path)
+net.eval()
+
+mean0 = np.load(mean_path, encoding='latin1')
+mean = mean0['arr_0']
+net.cuda()
+
 print('> CNN Model loaded to regress 3D Shape and Texture!')
+model = scipy.io.loadmat(BFM_path,squeeze_me=True,struct_as_record=False)
+model = model["BFM"]
+faces = model.faces-1
+print('> Loaded the Basel Face Model to write the 3D output!')
 ## For loop over the input images
 count = 0
 with open(data_out + "/imList.txt", "r") as ins:
@@ -164,17 +159,18 @@ with open(data_out + "/imList.txt", "r") as ins:
 		count = count + 1
 		fig_name = ntpath.basename(image_path)
 		outFile = data_out + "/shape/" + fig_name[:-4]
-		print('> Processing image: ', image_path, ' ', fig_name, ' ', str(count) + '/' + str(countIms))
-		net.blobs['data'].reshape(1,3,trg_size,trg_size)
-		im = caffe.io.load_image(image_path)
-		## Transforming the image into the right format
-		net.blobs['data'].data[...] = transformer.preprocess('data', im)
-		## Forward pass into the CNN
-		net_output = net.forward()
-		## Getting the output
-		features = np.hstack( [net.blobs[layer_name].data[0].flatten()] )
+		print('> Processing image: ' + image_path)
+		im = cv2.imread(image_path)
+		im = cv2.resize(im, (224, 224)).astype(float).transpose((2,0,1))
+		im = im - mean
+		#im = im/255
+		im = Variable(torch.from_numpy(im).unsqueeze(0).float().cuda())
+		features = net(im).data.cpu().numpy()
 		## Writing the regressed 3DMM parameters
-		np.savetxt(outFile + '.ply.alpha', features[0:99])
+		np.savetxt(outFile + '.ply.alpha', features[0,0:99])
+		S,T = utils.projectBackBFM(model,features[0,:])
+		print('> Writing 3D file in: ', outFile + '.ply')
+		utils.write_ply(outFile + '.ply', S, T, faces)
 
 ##################################################
 ##### Bump map regression ########################
@@ -183,5 +179,5 @@ bumpMapRegressor.estimateBump(bumpModel_path, data_out + "/imList.txt", data_out
 ##################################################
 ##### Recover the 3D models ##################
 print("Recover the 3D models")
-print("cd ../bin; ./TestBump -batch " + data_out + "/imList.txt " + data_out + "/3D/ " + data_out + "/shape " + data_out + "/bump " + data_out + "/bump ../3DMM_model/BaselFaceModel_mod.h5 ../dlib_model/shape_predictor_68_face_landmarks.dat " + data_out + "/imgs; cd ../demoCode");
-os.system("cd ../bin; ./TestBump -batch " + data_out + "/imList.txt " + data_out + "/3D/ " + data_out + "/shape " + data_out + "/bump " + data_out + "/bump ../3DMM_model/BaselFaceModel_mod.h5 ../dlib_model/shape_predictor_68_face_landmarks.dat " + data_out + "/imgs; cd ../demoCode");
+print("./TestBump -batch " + data_out + "/imList.txt " + data_out + "/3D/ " + data_out + "/shape " + data_out + "/bump " + data_out + "/bump ../3DMM_model/BaselFaceModel_mod.h5 ../dlib_model/shape_predictor_68_face_landmarks.dat " + data_out + "/imgs " + data_out + "/imgs/ 1");
+os.system("./TestBump -batch " + data_out + "/imList.txt " + data_out + "/3D/ " + data_out + "/shape " + data_out + "/bump " + data_out + "/bump ../3DMM_model/BaselFaceModel_mod.h5 ../dlib_model/shape_predictor_68_face_landmarks.dat " + data_out + "/imgs " + data_out + "/imgs/ 1");

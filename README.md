@@ -6,26 +6,15 @@
 
 Python and C++ code for realistic 3D face modeling from single image using **[our shape and detail regression networks](https://arxiv.org/abs/1712.05083)** published in CVPR 2018 [1] (follow the link to our PDF which has many, **many** more reconstruction results.)
 
-This page contains end-to-end demo code that estimates the 3D facial shape with realistic details directly from an unconstrained 2D face image. For a given input image, it produces standard ply files of the 3D face shape. It accompanies the deep networks described in our paper [1] and [2]. The occlusion recovery code, however, will be published in a future release. We also include demo code and data presented in [1].
+This page contains end-to-end demo code that estimates the 3D facial shape with realistic details directly from an unconstrained 2D face image. For a given input image, it produces standard ply files of the 3D face shape. It accompanies the deep networks described in our paper [1] and [2]. The occlusion recovery code, however, will be published in a future release. We also include demo code and data presented in [1].f
 
 ## Dependencies
 
-## Library requirements
-
-* [Dlib Python and C++ library](http://dlib.net/)
-* [OpenCV Python and C++ library](http://opencv.org/)
-* [Caffe](http://caffe.berkeleyvision.org) (**version 1.0.0-rc3 or above required**)
-* [Numpy](http://www.numpy.org/)
-* [Python2.7](https://www.python.org/download/releases/2.7/)
-* [PyTorch](http://pytorch.org/)
-
-The code has been tested on Linux only. On Linux you can rely on the default version of python, installing all the packages needed from the package manager or on Anaconda Python and install required packages through `conda`. A bit more effort is required to install caffé, dlib, and libhdf5.
-
 ## Data requirements
 
-Before running the code, please, make sure to have all the required data in the following specific folder:
+Before compiling the code, please, make sure to have all the required data in the following specific folder:
 - **[Download our Bump-CNN](https://docs.google.com/forms/d/11zprdPz9DaBiOJakMixis1vylHps7yn8XcSw72fecGo)** and move the CNN model (1 file: `ckpt_109_grad.pth.tar`) into the `CNN` folder
-- **[Download our CNN](https://docs.google.com/forms/d/e/1FAIpQLSd6cwKh-CO_8Yr-VeDi27GPswyqI9Lvub6S2UYBRsLooCq9Vw/viewform)** and move the CNN model (3 files: `3dmm_cnn_resnet_101.caffemodel`,`deploy_network.prototxt`,`mean.binaryproto`) into the `CNN` folder
+- **[Download our PyTorch CNN model](https://docs.google.com/forms/d/e/1FAIpQLSd6cwKh-CO_8Yr-VeDi27GPswyqI9Lvub6S2UYBRsLooCq9Vw/viewform)** and move the CNN model (3 files: `shape_model.pth`,`shape_model.py`,`shape_mean.npz`) into the `CNN` folder
 - **[Download the Basel Face Model](http://faces.cs.unibas.ch/bfm/main.php?nav=1-2&id=downloads)** and move `01_MorphableModel.mat` into the `3DMM_model` folder
 - **[Acquire 3DDFA Expression Model](http://www.cbsr.ia.ac.cn/users/xiangyuzhu/projects/3DDFA/Code/3DDFA.zip)**, run its code to generate `Model_Expression.mat` and move this file the `3DMM_model` folder
 - Go into `3DMM_model` folder. Run the script `python trimBaselFace.py`. This should output 2 files `BaselFaceModel_mod.mat` and `BaselFaceModel_mod.h5`.
@@ -33,45 +22,68 @@ Before running the code, please, make sure to have all the required data in the 
 
 Note that we modified the model files from the 3DMM-CNN paper. Therefore, if you generated these files before, you need to re-create them for this code.
 
-## Installation (C++ code)
+## Installation
 
-- Install **cmake**: 
+There are 2 options below to compile our code:
+
+### Installation with Docker (recommended)
+
+- Install [Docker CE](https://docs.docker.com/install/)
+- With Linux, [manage Docker as non-root user](https://docs.docker.com/install/linux/linux-postinstall/)
+- Install [nvidia-docker](https://github.com/NVIDIA/nvidia-docker)
+- Build docker image:
 ```
-	apt-get install cmake
+	docker build -t extreme-3dmm-docker .
 ```
-- Install **opencv** (2.4.6 or higher is recommended):
+### Installation without Docker on Linux
+
+The steps below have been tested on Ubuntu Linux only:
+
+- Install [Python2.7](https://www.python.org/download/releases/2.7/)
+- Install the required third-party packages:
 ```
-	(http://docs.opencv.org/doc/tutorials/introduction/linux_install/linux_install.html)
+	sudo apt-get install -y libhdf5-serial-dev libboost-all-dev cmake libosmesa6-dev freeglut3-dev
 ```
-- Install **libboost** (1.5 or higher is recommended):
+- Install [Dlib C++ library](http://dlib.net/). Sample code to comiple Dlib:
 ```
-	apt-get install libboost-all-dev
-```
-- Install **OpenGL, freeglut, and glew**
-```
-	sudo apt-get install freeglut3-dev
-	sudo apt-get install libglew-dev
-```
-- Install **libhdf5-dev** library
-```
-	sudo apt-get install libhdf5-dev
-```
-- Install **Dlib C++ library**. Dlib should be compiled to shared objects. Check the comments in its CMakeList.txt.
-```
-	(http://dlib.net/)
-```
-- In Extreme 3D's `CMakeLists.txt`, update Dlib directory paths (`DLIB_INCLUDE_DIR` and `DLIB_LIB_DIR`).
-- Make build directory (temporary) in the Extreme 3D downloaded repository. Make & install to bin folder
-```
+	wget http://dlib.net/files/dlib-19.6.tar.bz2
+	tar xvf dlib-19.6.tar.bz2
+	cd dlib-19.6/
 	mkdir build
 	cd build
-	cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=../bin ..
-	make
-	make install
+	cmake ..
+	cmake --build . --config Release
+	sudo make install
+	cd ..
 ```
-  This code should generate `TestBump` in `bin` folder
+- Install [PyTorch](http://pytorch.org/)
+- Install other required third-party Python packages:
+```
+	pip install opencv-python torchvision scikit-image cvbase pandas mmdnn dlib
+```
+- Config Dlib and HDF5 path in CMakefiles.txt, if needed
+- Build C++ code
+```
+	mkdir build;
+	cd build; \
+	cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=../demoCode ..;
+	make;
+	make install;
+	cd ..
+```
+This code should generate `TestBump` in `demoCode` folder
 
 ## Usage
+
+### Start docker container
+If you compile our code with Docker, you need to start a Docker container to run our code. You also need to set up a shared folder to transfer input/output data between the host computer and the container.
+- Prepare the shared folder on the host computer. For example, `/home/ubuntu/shared`
+- Copy input data (if needed) to the shared folder
+- Start container:
+```
+	nvidia-docker run --rm -ti --ipc=host --privileged -v /home/ubuntu/shared:/shared extreme-3dmm-docker bash
+```
+Now folder `/home/ubuntu/shared` on your host computer will be mounted to folder `/shared` inside the container
 
 ### 3D face modeling with realistic details from a set of input images
 * Go into `demoCode` folder. The demo script can be used from the command line with the following syntax:
@@ -92,9 +104,14 @@ An example for `<inputList>` is `demoCode/testImages.txt`
 </pre>
 
 The output 3D models will be `<outputDir>/<imageName>_<postfix>.ply` with `<postfix>` = `<modelType>_<poseType>`. `<modelType>` can be `"foundation"`, `"withBump"` (before soft-symmetry),`"sparseFull"` (soft-symmetry on the sparse mesh), and `"final"`. `<poseType>` can be `"frontal"` or `"aligned"` (based on the estimated pose).
-The final 3D shape has `<postfix>` as `"final_frontal"`.
+The final 3D shape has `<postfix>` as `"final_frontal"`. You can config the output models in code before compiling.
 
 The PLY files can be displayed using standard off-the-shelf 3D (ply file) visualization software such as [MeshLab](http://meshlab.sourceforge.net).
+
+Sample command:
+```bash
+	python testBatchModel.py testImages.txt /shared
+```
 
 Note that our occlusion recovery code is not included in this release.
 
@@ -104,6 +121,8 @@ Note that our occlusion recovery code is not included in this release.
 ```bash
 $ Usage: ./testPaperResults.sh
 ```
+
+Before exiting the docker container, remember to save your output data to the shared folder.
 
 ## Citation
 

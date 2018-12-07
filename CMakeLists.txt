@@ -7,12 +7,14 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/)
 set(CUDA_USE_STATIC_CUDA_RUNTIME OFF)
 
 # DEFINE PATH TO YOUR THIRD PARTY LIBs
-set (DLIB_INCLUDE_DIR "/home/anh/Downloads/dlib-19.4")
-set (DLIB_LIB_DIR "/home/anh/Downloads/dlib-19.4/shared_build/dlib")
+set (DLIB_INCLUDE_DIR "/usr/local/include/")
+set (DLIB_LIB_DIR "/usr/local/lib/")
+set (HDF5_INCLUDE_DIR "/usr/include/hdf5/serial")
+set (HDF5_LIB_DIR "/usr/lib/x86_64-linux-gnu/")
 
 # OpenCV
 if(UNIX)
-	find_package( OpenCV REQUIRED )
+	find_package( OpenCV )
 	MESSAGE("OpenCV information:") 
 	MESSAGE("  OpenCV_INCLUDE_DIRS: ${OpenCV_INCLUDE_DIRS}") 
 	MESSAGE("  OpenCV_LIBRARIES: ${OpenCV_LIBS}") 

@@ -5,6 +5,7 @@
 #include <Eigen/SparseLU>
 #include <Eigen/SparseQR>
 #include <limits>
+#include <opencv2/calib3d/calib3d.hpp> 
 #include "opencv2/legacy/legacy.hpp"
 #include <omp.h>
 
@@ -825,10 +826,14 @@ bool FaceServices2::combineBump(cv::Mat colorIm, cv::Mat lms, cv::Mat alpha, cv:
 		// Compute dense vertices w/o bump (v)
 	refDepth = refDepth-minDepth;
 	cv::Mat v(pointInd[0].size(),3,CV_32F);
+	cv::Mat v00 = v.clone();
 	for (int i=0;i<pointInd[0].size();i++){
 			v.at<float>(i,2) = refDepth.at<float>(pointInd[0][i],pointInd[1][i])+minDepth;
 			v.at<float>(i,0) = v.at<float>(i,2)*(pointInd[1][i] - _k[2])/_k[0];
 			v.at<float>(i,1) = v.at<float>(i,2)*(pointInd[0][i] - _k[5])/_k[4];
+			v00.at<float>(i,2) = refDepth.at<float>(pointInd[0][i],pointInd[1][i])+minDepth;
+			v00.at<float>(i,0) = pointInd[1][i];
+			v00.at<float>(i,1) = pointInd[0][i];
 	}
 		// Compute triangles on the dense mesh (fac2)
 	std::vector<Vec3i> fac;
@@ -839,10 +844,12 @@ bool FaceServices2::combineBump(cv::Mat colorIm, cv::Mat lms, cv::Mat alpha, cv:
 			fac2.at<int>(i,1) = fac[i](1);
 			fac2.at<int>(i,2) = fac[i](2);
 	}
+	cv::Mat fac2_im = fac2.clone();
+	fac2.col(1).copyTo(fac2_im.col(2));
+	fac2.col(2).copyTo(fac2_im.col(1));
 
-	//sprintf(text,"%s_raw.ply",out_prefix.c_str());
-	//write_plyShapeFloat(text,v,v*0,fac2);
-
+	//sprintf(text,"%s_foundation_aligned_image.ply",out_prefix.c_str());
+	//write_plyShapeFloat(text,v00,fac2_im);
 		// Add bump map to the dense mesh (v)
 	for (int j=0;j<pointInd[0].size();j++){
 		int x = pointInd[1][j];
@@ -852,10 +859,13 @@ bool FaceServices2::combineBump(cv::Mat colorIm, cv::Mat lms, cv::Mat alpha, cv:
 		change = (change-127)/12 * 1.25;
 		v.at<float>(j,2) += change;
 		refDepth.at<float>(y,x) = v.at<float>(j,2) - minDepth;
+		v00.at<float>(j,2) = v.at<float>(j,2);
 	}
 	if (outSet.withBumpAligned) {
 		sprintf(text,"%s_withBump_aligned.ply",out_prefix.c_str());
 		write_plyShapeFloat(text,v,fac2);
+		//sprintf(text,"%s_withBump_aligned_image.ply",out_prefix.c_str());
+		//write_plyShapeFloat(text,v00,fac2_im);
 	}
 	if (!softSym) return true;
 

@@ -1,6 +1,6 @@
 # Extreme 3D Face Reconstruction: Seeing Through Occlusions
 
-![Teaser](http://www-bcf.usc.edu/~iacopoma/img/extreme_3d_teaser.png)
+<img src="extreme_3d_teaser.png" width="900px"/>
 
 **Please note that the main part of the code has been released, though we are still testing it to fix possible glitches. Thank you.**
 

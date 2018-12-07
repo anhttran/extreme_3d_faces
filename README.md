@@ -14,7 +14,7 @@ This page contains end-to-end demo code that estimates the 3D facial shape with 
 
 Before compiling the code, please, make sure to have all the required data in the following specific folder:
 - **[Download our Bump-CNN](https://docs.google.com/forms/d/11zprdPz9DaBiOJakMixis1vylHps7yn8XcSw72fecGo)** and move the CNN model (1 file: `ckpt_109_grad.pth.tar`) into the `CNN` folder
-- **[Download our PyTorch CNN model](https://docs.google.com/forms/d/e/1FAIpQLSd6cwKh-CO_8Yr-VeDi27GPswyqI9Lvub6S2UYBRsLooCq9Vw/viewform)** and move the CNN model (3 files: `shape_model.pth`,`shape_model.py`,`shape_mean.npz`) into the `CNN` folder
+- **[Download our PyTorch CNN model](https://docs.google.com/forms/d/e/1FAIpQLSd6cwKh-CO_8Yr-VeDi27GPswyqI9Lvub6S2UYBRsLooCq9Vw/viewform)** and move the CNN model (3 files: `shape_model.pth`, `shape_model.py`, `shape_mean.npz`) into the `CNN` folder
 - **[Download the Basel Face Model](http://faces.cs.unibas.ch/bfm/main.php?nav=1-2&id=downloads)** and move `01_MorphableModel.mat` into the `3DMM_model` folder
 - **[Acquire 3DDFA Expression Model](http://www.cbsr.ia.ac.cn/users/xiangyuzhu/projects/3DDFA/Code/3DDFA.zip)**, run its code to generate `Model_Expression.mat` and move this file the `3DMM_model` folder
 - Go into `3DMM_model` folder. Run the script `python trimBaselFace.py`. This should output 2 files `BaselFaceModel_mod.mat` and `BaselFaceModel_mod.h5`.
@@ -144,6 +144,7 @@ If you find this work useful, please cite our paper [1] with the following bibte
 [2] A. Tran, T. Hassner, I. Masi, G. Medioni, "[Regressing Robust and Discriminative 3D Morphable Models with a very Deep Neural Network](http://openaccess.thecvf.com/content_cvpr_2017/papers/Tran_Regressing_Robust_and_CVPR_2017_paper.pdf)", CVPR 2017 
 
 ## Changelog
+- Dec. 2018, Convert to Dockerfile
 - Dec. 2017, First Release 
 
 ## License and Disclaimer

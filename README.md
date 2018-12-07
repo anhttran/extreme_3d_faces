@@ -6,7 +6,7 @@
 
 Python and C++ code for realistic 3D face modeling from single image using **[our shape and detail regression networks](https://arxiv.org/abs/1712.05083)** published in CVPR 2018 [1] (follow the link to our PDF which has many, **many** more reconstruction results.)
 
-This page contains end-to-end demo code that estimates the 3D facial shape with realistic details directly from an unconstrained 2D face image. For a given input image, it produces standard ply files of the 3D face shape. It accompanies the deep networks described in our paper [1] and [2]. The occlusion recovery code, however, will be published in a future release. We also include demo code and data presented in [1].f
+This page contains end-to-end demo code that estimates the 3D facial shape with realistic details directly from an unconstrained 2D face image. For a given input image, it produces standard ply files of the 3D face shape. It accompanies the deep networks described in our paper [1] and [2]. The occlusion recovery code, however, will be published in a future release. We also include demo code and data presented in [1].
 
 ## Dependencies
 

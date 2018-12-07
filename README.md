@@ -104,7 +104,7 @@ An example for `<inputList>` is `demoCode/testImages.txt`
 </pre>
 
 The output 3D models will be `<outputDir>/<imageName>_<postfix>.ply` with `<postfix>` = `<modelType>_<poseType>`. `<modelType>` can be `"foundation"`, `"withBump"` (before soft-symmetry),`"sparseFull"` (soft-symmetry on the sparse mesh), and `"final"`. `<poseType>` can be `"frontal"` or `"aligned"` (based on the estimated pose).
-The final 3D shape has `<postfix>` as `"final_frontal"`. You can config the output models in code before compiling.
+The final 3D shape has `<postfix>` as `"final_frontal"`. You can config the output models in [code](https://github.com/anhttran/extreme_3d_faces/blob/master/main.cpp#L141,L142) before compiling.
 
 The PLY files can be displayed using standard off-the-shelf 3D (ply file) visualization software such as [MeshLab](http://meshlab.sourceforge.net).
 

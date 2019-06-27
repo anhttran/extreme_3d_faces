@@ -16,7 +16,7 @@ RUN wget http://dlib.net/files/dlib-19.6.tar.bz2; \
 	cd ..
 
 RUN pip install http://download.pytorch.org/whl/cu90/torch-0.3.1-cp27-cp27mu-linux_x86_64.whl
-RUN pip install opencv-python torchvision scikit-image cvbase pandas mmdnn dlib
+RUN pip install opencv-python torchvision==0.2.1 scikit-image cvbase pandas mmdnn dlib
 
 RUN mkdir build; \
 	cd build; \

@@ -317,7 +317,7 @@ class Net(nn.Module):
             images = batch['image']
             images = images.float()
 	    imName = batch['name'][0]
-            images = Variable(images.cuda())
+            images = Variable(images.cuda(), volatile=True)
             recon_mask, recon = self.Gnet.forward(images)
 	    reconmat = recon.data.cpu().numpy()
 	    reconmat = (reconmat[0,0,:,:]+1)*255/2

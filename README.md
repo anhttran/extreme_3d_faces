@@ -15,7 +15,7 @@ This page contains end-to-end demo code that estimates the 3D facial shape with 
 Before compiling the code, please, make sure to have all the required data in the following specific folder:
 - **[Download our Bump-CNN](https://docs.google.com/forms/d/11zprdPz9DaBiOJakMixis1vylHps7yn8XcSw72fecGo)** and move the CNN model (1 file: `ckpt_109_grad.pth.tar`) into the `CNN` folder
 - **[Download our PyTorch CNN model](https://docs.google.com/forms/d/e/1FAIpQLSd6cwKh-CO_8Yr-VeDi27GPswyqI9Lvub6S2UYBRsLooCq9Vw/viewform)** and move the CNN model (3 files: `shape_model.pth`, `shape_model.py`, `shape_mean.npz`) into the `CNN` folder
-- **[Download the Basel Face Model](http://faces.cs.unibas.ch/bfm/main.php?nav=1-2&id=downloads)** and move `01_MorphableModel.mat` into the `3DMM_model` folder
+- **[Download the Basel Face Model](https://faces.dmi.unibas.ch/bfm/index.php?nav=1-1-0&id=details)** and move `01_MorphableModel.mat` into the `3DMM_model` folder
 - **[Acquire 3DDFA Expression Model](http://www.cbsr.ia.ac.cn/users/xiangyuzhu/projects/3DDFA/Code/3DDFA.zip)**, run its code to generate `Model_Expression.mat` and move this file the `3DMM_model` folder
 - Go into `3DMM_model` folder. Run the script `python trimBaselFace.py`. This should output 2 files `BaselFaceModel_mod.mat` and `BaselFaceModel_mod.h5`.
 - **[Download dlib face prediction model](http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2)** and move the `.dat` file into the `dlib_model` folder.
